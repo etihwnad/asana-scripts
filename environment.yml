@@ -1,0 +1,18 @@
+name: asana
+channels:
+- defaults
+dependencies:
+- ipython=7.26.0
+- pip=21.2.3
+- python=3.9.6
+- pyyaml=5.4.1
+- pip:
+  - git+https://github.com/Asana/python-asana.git
+  - charset-normalizer==2.0.4
+  - idna==3.2
+  - oauthlib==3.1.1
+  - requests==2.26.0
+  - requests-oauthlib==1.3.0
+  - six==1.16.0
+  - urllib3==1.26.6
+prefix: /home/dan/miniconda3/envs/asana
