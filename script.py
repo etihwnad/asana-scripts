@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import json
+from datetime import datetime as dt
 
 import asana
 
@@ -43,13 +44,13 @@ def has_tag(r, tag):
 
 
 
-{'gid': '1200716274440367',
- 'memberships': [
-     {'project': {'gid': '1200601501511683', 'name': 'Electronics 340 2021'},
-      'section': {'gid': '1200716274440346', 'name': 'Tasks'}}
-    ],
- 'name': 'Setup syllabus',
- 'tags': [{'gid': '682001759886391', 'name': 'active'}]}
+# {'gid': '1200716274440367',
+#  'memberships': [
+#      {'project': {'gid': '1200601501511683', 'name': 'Electronics 340 2021'},
+#       'section': {'gid': '1200716274440346', 'name': 'Tasks'}}
+#     ],
+#  'name': 'Setup syllabus',
+#  'tags': [{'gid': '682001759886391', 'name': 'active'}]}
 
 
 active_tasks = []
@@ -57,14 +58,39 @@ for r in res:
     if has_tag(r, 'active'):
         active_tasks.append(r)
 
+today = dt.now()
+tasks = []
 for task in active_tasks:
     for m in task['memberships']:
-        t_name = task['name']
-        due = task['due_on'] or ''
-        p_name = m['project']['name']
+        t = {}
+        t['name'] = task['name']
+        due_str = task['due_on']
+        t['due_on'] = due_str
+        if due_str:
+            due_date = dt.strptime(due_str, '%Y-%m-%d')
+            days_due = (due_date - today).days + 1
+            t['days_due'] = days_due
+
+        t['p_name'] = m['project']['name']
+
         s_name = m['section']['name']
         if s_name == 'Untitled section':
             s_name = 'none'
+        t['s_name'] = m['section']['name']
+        tasks.append(t)
 
-        print(f'{p_name:20.20s} : {s_name:10.10s} : {t_name} {due}')
+
+for t in sorted(tasks, key=lambda x: x['days_due']):
+    p_name = t['p_name']
+    s_name = t['s_name']
+    t_name = t['name']
+    days_due = t['days_due']
+
+    if days_due == 0:
+        due = '***'
+    else:
+        due = f'{days_due:+2d}'
+
+    # print(f'{p_name:16.16s} : {s_name:10.10s} : {t_name} {due}')
+    print(f'{p_name:24.24s} - {t_name} {due}')
 
