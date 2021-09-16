@@ -87,10 +87,10 @@ for t in sorted(tasks, key=lambda x: x['days_due']):
     days_due = t['days_due']
 
     if days_due == 0:
-        due = '***'
+        due = '===>'
     else:
-        due = f'{days_due:+2d}'
+        due = f' {days_due:+d} '
 
     # print(f'{p_name:16.16s} : {s_name:10.10s} : {t_name} {due}')
-    print(f'{p_name:24.24s} - {t_name} {due}')
+    print(f'{p_name:24.24s} {due} {t_name}')
 
