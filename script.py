@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import json
-from datetime import datetime as dt
+from datetime import time, datetime
 
 import asana
 
@@ -58,7 +58,9 @@ for r in res:
     if has_tag(r, 'active'):
         active_tasks.append(r)
 
-today = dt.now()
+today = datetime.now()
+# want day only so +1 day means tomorrow at any current time
+today = datetime.combine(today.date(), time(0))
 tasks = []
 for task in active_tasks:
     for m in task['memberships']:
@@ -67,9 +69,12 @@ for task in active_tasks:
         due_str = task['due_on']
         t['due_on'] = due_str
         if due_str:
-            due_date = dt.strptime(due_str, '%Y-%m-%d')
-            days_due = (due_date - today).days + 1
+            due_date = datetime.strptime(due_str, '%Y-%m-%d')
+            days_due = (due_date - today).days
             t['days_due'] = days_due
+        else:
+            # un-dated active are considered due today
+            t['days_due'] = 0
 
         t['p_name'] = m['project']['name']
 
