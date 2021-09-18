@@ -85,7 +85,17 @@ for task in active_tasks:
         tasks.append(t)
 
 
-for t in sorted(tasks, key=lambda x: x['days_due']):
+def multisort(xs, specs):
+    from operator import getitem
+    for key, reverse in reversed(specs):
+        xs.sort(key=lambda x: x[key], reverse=reverse)
+    return xs
+
+
+for t in multisort(tasks,
+                    (('days_due', False),
+                    ('p_name', False),
+                    ('name', False))):
     p_name = t['p_name']
     s_name = t['s_name']
     t_name = t['name']
