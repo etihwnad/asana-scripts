@@ -1,0 +1,21 @@
+= Scripts for Asana
+
+
+== Requirements
+
+These are developed and run in a `conda` environment.
+See `environment.yml` for the specific packages.
+The Python version I'm using with this is 3.9.6.
+
+
+== my-tasks-tag
+
+```bash
+my-tasks-tag.py 'active'
+```
+
+Collect a list of tasks assigned to me that also have the given tag.
+
+Outputs a sorted list by relative due dates.
+Un-dated items are considered due today.
+

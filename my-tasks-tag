@@ -1,12 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import json
 from datetime import time, datetime
+import sys
 
 import asana
 
 
 AUTH_FILE = 'auth.json'
+
+try:
+    SEARCH_TAG = sys.argv[1]
+except IndexError:
+    SEARCH_TAG = 'active'
 
 
 with open(AUTH_FILE) as f:
@@ -53,16 +59,16 @@ def has_tag(r, tag):
 #  'tags': [{'gid': '682001759886391', 'name': 'active'}]}
 
 
-active_tasks = []
+tagged_tasks = []
 for r in res:
-    if has_tag(r, 'active'):
-        active_tasks.append(r)
+    if has_tag(r, SEARCH_TAG):
+        tagged_tasks.append(r)
 
 today = datetime.now()
 # want day only so +1 day means tomorrow at any current time
 today = datetime.combine(today.date(), time(0))
 tasks = []
-for task in active_tasks:
+for task in tagged_tasks:
     for m in task['memberships']:
         t = {}
         t['name'] = task['name']
@@ -73,7 +79,7 @@ for task in active_tasks:
             days_due = (due_date - today).days
             t['days_due'] = days_due
         else:
-            # un-dated active are considered due today
+            # un-dated tagged are considered due today
             t['days_due'] = 0
 
         t['p_name'] = m['project']['name']
