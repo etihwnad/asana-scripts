@@ -7,6 +7,8 @@ These are developed and run in a `conda` environment.
 See `environment.yml` for the specific packages.
 The Python version I'm using with this is 3.9.6.
 
+Copy `auth.json.example` to `auth.json` and edit with your access token and Workspace ID.
+
 
 == my-tasks-tag
 
