@@ -37,6 +37,7 @@ res = client.user_task_lists.get_user_task_list(task_list['gid'])
 opts = {'completed_since':'now'}
 fields = ['this.name',
           'this.due_on',
+          'this.liked',
           'this.memberships.project.name',
           'this.memberships.section.name',
           'this.tags.name']
@@ -72,6 +73,7 @@ for task in tagged_tasks:
     for m in task['memberships']:
         t = {}
         t['name'] = task['name']
+        t['liked'] = task['liked']
         due_str = task['due_on']
         t['due_on'] = due_str
         if due_str:
@@ -110,8 +112,13 @@ for t in multisort(tasks,
     if days_due == 0:
         due = '===>'
     else:
-        due = f' {days_due:+d} '
+        due = f'{days_due:+3d}'
+
+    if t['liked']:
+        like = '**'
+    else:
+        like = '  '
 
     # print(f'{p_name:16.16s} : {s_name:10.10s} : {t_name} {due}')
-    print(f'{p_name:24.24s} {due} {t_name}')
+    print(f'{p_name:24.24s} {due}{like}{t_name}')
 
