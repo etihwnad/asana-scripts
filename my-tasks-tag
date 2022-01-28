@@ -110,7 +110,7 @@ for t in multisort(tasks,
     days_due = t['days_due']
 
     if days_due == 0:
-        due = '===>'
+        due = '==>'
     else:
         due = f'{days_due:+3d}'
 
