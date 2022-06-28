@@ -9,6 +9,9 @@ import asana
 
 AUTH_FILE = 'auth.json'
 
+MAX_NAME_WIDTH = 60
+MAX_PROJ_WIDTH = 24
+
 try:
     SEARCH_TAG = sys.argv[1]
 except IndexError:
@@ -107,6 +110,13 @@ for t in multisort(tasks,
     p_name = t['p_name']
     s_name = t['s_name']
     t_name = t['name']
+
+    if len(p_name) > MAX_PROJ_WIDTH:
+        p_name = p_name[:MAX_PROJ_WIDTH-1] + '.'
+
+    if len(t_name) > MAX_NAME_WIDTH:
+        t_name = t_name[:MAX_NAME_WIDTH-1] + '.'
+
     days_due = t['days_due']
 
     if days_due == 0:
@@ -120,5 +130,6 @@ for t in multisort(tasks,
         like = '  '
 
     # print(f'{p_name:16.16s} : {s_name:10.10s} : {t_name} {due}')
-    print(f'{p_name:24.24s} {due}{like}{t_name}')
+    pw = MAX_PROJ_WIDTH
+    print(f'{p_name:{pw}.{pw}} {due}{like}{t_name}')
 
