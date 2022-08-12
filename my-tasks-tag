@@ -33,7 +33,8 @@ client = asana.Client.access_token(asana_key)
 # opts = {'workspace':workspace_gid,}
 # result = client.tasks.get_tasks(opts, opt_pretty=True)
 
-task_list = client.user_task_lists.get_user_task_list_for_user('me', {'workspace':workspace_gid})
+task_list = client.user_task_lists.get_user_task_list_for_user(
+    'me', {'workspace':workspace_gid})
 
 res = client.user_task_lists.get_user_task_list(task_list['gid'])
 
@@ -93,6 +94,14 @@ for task in tagged_tasks:
         if s_name == 'Untitled section':
             s_name = 'none'
         t['s_name'] = m['section']['name']
+
+        # 'tags': [
+        #       {'gid': '67092546920020', 'name': 'waiting'},
+        #       {'gid': '682001759886391', 'name': 'active'}
+        #   ]
+        tags = [tag['name'] for tag in task['tags'] if tag['name'] != SEARCH_TAG]
+        t['tags'] = tags
+
         tasks.append(t)
 
 
@@ -129,7 +138,12 @@ for t in multisort(tasks,
     else:
         like = '  '
 
+    if t['tags']:
+        tags = '[' + ','.join(t['tags']) + '] '
+    else:
+        tags = ''
+
     # print(f'{p_name:16.16s} : {s_name:10.10s} : {t_name} {due}')
     pw = MAX_PROJ_WIDTH
-    print(f'{p_name:{pw}.{pw}} {due}{like}{t_name}')
+    print(f'{p_name:{pw}.{pw}} {due}{like}{tags}{t_name}')
 
