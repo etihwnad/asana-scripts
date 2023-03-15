@@ -10,6 +10,7 @@ import asana
 # memberships api is changing
 # https://forum.asana.com/t/paused-upcoming-changes-that-impact-getting-and-setting-memberships-and-access-levels/232106
 #
+# https://github.com/Asana/python-asana#asana-change-warnings
 
 AUTH_FILE = 'auth.json'
 
