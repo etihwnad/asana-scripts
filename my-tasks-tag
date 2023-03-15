@@ -7,6 +7,10 @@ import sys
 import asana
 
 
+# memberships api is changing
+# https://forum.asana.com/t/paused-upcoming-changes-that-impact-getting-and-setting-memberships-and-access-levels/232106
+#
+
 AUTH_FILE = 'auth.json'
 
 MAX_NAME_WIDTH = 60
@@ -24,6 +28,7 @@ with open(AUTH_FILE) as f:
     workspace_gid = j['workspace']
 
 client = asana.Client.access_token(asana_key)
+client.headers = {'asana-enable': 'new_memberships'}
 # me = client.users.me()
 # print(me)
 
