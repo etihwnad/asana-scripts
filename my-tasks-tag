@@ -29,7 +29,7 @@ with open(AUTH_FILE) as f:
     workspace_gid = j['workspace']
 
 client = asana.Client.access_token(asana_key)
-client.headers = {'asana-enable': 'new_memberships'}
+client.headers = {'asana-enable': 'new_goal_memberships'}
 # me = client.users.me()
 # print(me)
 
